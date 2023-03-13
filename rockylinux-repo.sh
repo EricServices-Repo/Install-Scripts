@@ -1,11 +1,15 @@
 
 #!/usr/bin/env bash
-#EricServic.es Lancache Instance
+#EricServic.es Rocky Linux Repository Install
 #
-################
+#################################################
 # Version 1.0.1
-#
-#################
+# - Checks if Repository exists
+# - Creates Repository
+# - Checks if old repository is there, deletes
+# - Moves repository to .old
+# - Runs yum update
+#################################################
 
 
 #################
@@ -63,23 +67,29 @@ sleep 1
 
 ROCKYBASEOS_FILE=/etc/yum.repos.d/Rocky-BaseOS.repo.old
 if test -f "$ROCKYBASEOS_FILE"; then
-    echo -e "$ROCKYBASEOS_FILE already exists, no need to move.\n"
+    echo -e "ROCKYBASEOS_FILE already exists, need to delete.\n"
+    rm /etc/yum.repos.d/Rocky-BaseOS.repo.old
 fi
 
 if [ ! -f "$ROCKYBASEOS_FILE" ]
 then 
+echo -e "ROCKYBASEOS_FILE moved to .old repository.\n"
 mv /etc/yum.repos.d/Rocky-BaseOS.repo /etc/yum.repos.d/Rocky-BaseOS.repo.old
 fi
 
+
 ROCKYAPPSTREAM_FILE=/etc/yum.repos.d/Rocky-AppStream.repo.old
 if test -f "$ROCKYAPPSTREAM_FILE"; then
-    echo -e "$ROCKYAPPSTREAM_FILE already exists, no need to move.\n"
+    echo -e "ROCKYAPPSTREAM_FILE already exists, need to delete.\n"
+    rm /etc/yum.repos.d/Rocky-AppStream.repo.old
 fi
 
 if [ ! -f "$ROCKYAPPSTREAM_FILE" ]
 then 
+echo -e "ROCKYAPPSTREAM_FILE moved to .old repository.\n"
 mv /etc/yum.repos.d/Rocky-AppStream.repo /etc/yum.repos.d/Rocky-AppStream.repo.old
 fi
+
 
 yum update -y
 
